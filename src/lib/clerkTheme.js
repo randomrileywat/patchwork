@@ -13,5 +13,11 @@ export const clerkDarkAppearance = {
   elements: {
     card: 'border border-[#2a2f3d] shadow-none',
     formButton: 'font-mono tracking-wide',
+    // Social (OAuth) buttons: white background so provider logos/text are legible
+    socialButtonsBlockButton: 'bg-white hover:bg-gray-100 border border-gray-200 text-gray-900',
+    socialButtonsBlockButtonText: 'text-gray-900 font-medium',
+    // Hide Clerk branding footer
+    footer: 'hidden',
+    footerAction: 'hidden',
   },
 };
