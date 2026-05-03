@@ -39,7 +39,7 @@ function AuthPage() {
         {isSignUp ? (
           <div className="text-center max-w-xs">
             <p className="text-[var(--text-primary)] font-semibold text-lg">First time?</p>
-            <p className="text-[var(--text-muted)] text-sm mt-1">Create an account to track your progress, earn XP, and master the CTS-D exam.</p>
+            <p className="text-[var(--text-muted)] text-sm mt-1">Create an account to track your progress, earn XP, and start adaptive learning.</p>
           </div>
         ) : (
           <p className="text-[var(--text-muted)] text-sm">Welcome back. Sign in to continue.</p>
