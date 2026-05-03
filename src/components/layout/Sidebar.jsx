@@ -70,7 +70,7 @@ export default function Sidebar() {
         </ul>
 
         <div className="label-mono px-3 mb-2">Study</div>
-        <ul className="space-y-1 mb-4">
+        <ul className="space-y-1 mb-2">
           {studyLinks.map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <NavLink
@@ -91,6 +91,7 @@ export default function Sidebar() {
           ))}
         </ul>
 
+        <div className="label-mono px-3 mb-2">Track</div>
         <ul className="space-y-1">
           {trackLinks.map(({ to, label, icon: Icon, badgeKey }) => (
             <li key={to}>
