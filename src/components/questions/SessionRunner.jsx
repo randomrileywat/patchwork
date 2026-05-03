@@ -143,7 +143,7 @@ export default function SessionRunner({
 
       <div className="surface p-6 relative">
         {lastXP && <XPToast key={lastXP.key} amount={lastXP.amount} leveledUp={lastXP.leveledUp} />}
-        <Component question={q} onAnswered={handleAnswered} />
+        <Component key={q.id} question={q} onAnswered={handleAnswered} />
 
         <div className="mt-6 flex items-center justify-between border-t border-[var(--border)] pt-4">
           <div className="flex items-center gap-2">
