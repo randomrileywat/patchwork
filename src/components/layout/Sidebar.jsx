@@ -1,16 +1,23 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Target, Swords, BookmarkCheck, Flame } from 'lucide-react';
+import { LayoutDashboard, Target, Swords, BookmarkCheck, Flame, Trophy, Shield } from 'lucide-react';
+import { UserButton, useUser } from '@clerk/clerk-react';
 import { useProgressStore } from '../../store/progressStore.js';
+import { clerkDarkAppearance } from '../../lib/clerkTheme.js';
 
 const navLinks = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/practice', label: 'Practice', icon: Target },
   { to: '/arena', label: 'Weak Area Arena', icon: Swords },
   { to: '/review', label: 'Review Queue', icon: BookmarkCheck, badgeKey: 'review' },
+  { to: '/leaderboard', label: 'Leaderboard', icon: Trophy },
 ];
+
+const ADMIN_USER_ID = import.meta.env.VITE_ADMIN_USER_ID;
 
 export default function Sidebar() {
   const { totalXP, currentStreak, reviewQueue } = useProgressStore();
+  const { user } = useUser();
+  const isAdmin = ADMIN_USER_ID && user?.id === ADMIN_USER_ID;
 
   return (
     <aside className="hidden md:flex w-64 shrink-0 h-screen sticky top-0 border-r border-[var(--border)] bg-[var(--bg-surface)] flex-col">
@@ -58,6 +65,24 @@ export default function Sidebar() {
               </NavLink>
             </li>
           ))}
+          {isAdmin && (
+            <li>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  [
+                    'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border-accent)]'
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] border border-transparent',
+                  ].join(' ')
+                }
+              >
+                <Shield size={16} />
+                <span className="flex-1">Admin</span>
+              </NavLink>
+            </li>
+          )}
         </ul>
 
         <div className="border-t border-[var(--border)] my-5" />
@@ -79,9 +104,14 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      <div className="p-3 border-t border-[var(--border)] text-[10px] font-mono text-[var(--text-muted)] flex justify-between">
-        <span>v0.1.0</span>
-        <span>build · phase 1</span>
+      <div className="p-3 border-t border-[var(--border)] flex items-center gap-3">
+        <UserButton appearance={clerkDarkAppearance} afterSignOutUrl="/" />
+        <div className="flex-1 min-w-0">
+          <div className="text-xs text-[var(--text-primary)] truncate">
+            {user?.username || user?.primaryEmailAddress?.emailAddress?.split('@')[0] || 'You'}
+          </div>
+          <div className="text-[10px] font-mono text-[var(--text-muted)]">v0.2.0 · phase 2</div>
+        </div>
       </div>
     </aside>
   );

@@ -1,10 +1,12 @@
 // Reusable session runner — used by Practice, Arena, and Review (single-question mode).
 import { useState, useEffect, useRef } from 'react';
-import { Flag, SkipForward } from 'lucide-react';
+import { Flag, SkipForward, AlertTriangle } from 'lucide-react';
 import MultipleChoice from './MultipleChoice.jsx';
 import Flashcard from './Flashcard.jsx';
 import Scenario from './Scenario.jsx';
 import DragMatch from './DragMatch.jsx';
+import CommentThread from './CommentThread.jsx';
+import ReportModal from './ReportModal.jsx';
 import ProgressRing from '../shared/ProgressRing.jsx';
 import XPToast from '../shared/XPToast.jsx';
 import { useProgressStore } from '../../store/progressStore.js';
@@ -31,6 +33,9 @@ export default function SessionRunner({
   const [questionState, setQuestionState] = useState('idle'); // idle | answered
   const [lastXP, setLastXP] = useState(null);
   const [flagged, setFlagged] = useState(new Set());
+  const [reportingId, setReportingId] = useState(null);
+  const [reportedIds, setReportedIds] = useState(new Set());
+  const [toast, setToast] = useState(null);
   const [breakthrough, setBreakthrough] = useState(false);
   const containerRef = useRef(null);
 
@@ -145,8 +150,10 @@ export default function SessionRunner({
         {lastXP && <XPToast key={lastXP.key} amount={lastXP.amount} leveledUp={lastXP.leveledUp} />}
         <Component key={q.id} question={q} onAnswered={handleAnswered} />
 
+        {questionState === 'answered' && <CommentThread questionId={q.id} />}
+
         <div className="mt-6 flex items-center justify-between border-t border-[var(--border)] pt-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <button onClick={toggleFlag}
               className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded border transition-colors ${
                 flagged.has(q.id)
@@ -155,6 +162,17 @@ export default function SessionRunner({
               }`}>
               <Flag size={12} />
               {flagged.has(q.id) ? 'Flagged' : 'Flag for review'}
+            </button>
+            <button
+              onClick={() => !reportedIds.has(q.id) && setReportingId(q.id)}
+              disabled={reportedIds.has(q.id)}
+              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded border transition-colors ${
+                reportedIds.has(q.id)
+                  ? 'border-[var(--border)] text-[var(--text-muted)] cursor-not-allowed'
+                  : 'border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--accent-coral)] hover:border-[var(--accent-coral)]'
+              }`}>
+              <AlertTriangle size={12} />
+              {reportedIds.has(q.id) ? 'Reported' : 'Report'}
             </button>
           </div>
           <div className="flex items-center gap-2">
@@ -175,6 +193,26 @@ export default function SessionRunner({
           </div>
         </div>
       </div>
+
+      {reportingId && (
+        <ReportModal
+          questionId={reportingId}
+          onClose={() => setReportingId(null)}
+          onSubmitted={({ ok }) => {
+            if (ok) {
+              setReportedIds((prev) => new Set(prev).add(reportingId));
+              setToast("Thanks \u2014 we'll review this question.");
+              setTimeout(() => setToast(null), 2400);
+            }
+          }}
+        />
+      )}
+
+      {toast && (
+        <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 surface px-4 py-2 text-sm font-mono shadow-lg border border-[var(--border-accent)]">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }

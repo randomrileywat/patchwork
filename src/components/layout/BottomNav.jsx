@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Target, Swords, BookmarkCheck } from 'lucide-react';
+import { LayoutDashboard, Target, Swords, BookmarkCheck, Trophy } from 'lucide-react';
 import { useProgressStore } from '../../store/progressStore.js';
 
 const navLinks = [
@@ -7,6 +7,7 @@ const navLinks = [
   { to: '/practice', label: 'Practice', icon: Target },
   { to: '/arena', label: 'Arena', icon: Swords },
   { to: '/review', label: 'Review', icon: BookmarkCheck, badgeKey: 'review' },
+  { to: '/leaderboard', label: 'Ranks', icon: Trophy },
 ];
 
 export default function BottomNav() {

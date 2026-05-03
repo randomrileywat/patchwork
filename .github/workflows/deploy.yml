@@ -25,6 +25,13 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_ADMIN_USER_ID: ${{ secrets.VITE_ADMIN_USER_ID }}
+          # Intentionally NOT injecting VITE_SUPABASE_SERVICE_KEY — service role keys must
+          # never ship in a public client bundle. /admin works only in local dev.
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
