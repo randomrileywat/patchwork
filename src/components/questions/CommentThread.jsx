@@ -24,14 +24,14 @@ export default function CommentThread({ questionId }) {
   const load = async () => {
     setLoading(true);
     const { data: comments } = await supabase
-      .from('question_comments')
+      .from('patch_question_comments')
       .select('*')
       .eq('question_id', questionId)
       .order('created_at', { ascending: true });
 
     if (comments && comments.length > 0) {
       const userIds = [...new Set(comments.map((c) => c.user_id))];
-      const { data: users } = await supabase.from('users').select('id, username').in('id', userIds);
+      const { data: users } = await supabase.from('patch_users').select('id, username').in('id', userIds);
       const userMap = Object.fromEntries((users || []).map((u) => [u.id, u.username]));
       setComments(comments.map((c) => ({ ...c, username: userMap[c.user_id] || 'someone' })));
     } else {
@@ -61,7 +61,7 @@ export default function CommentThread({ questionId }) {
     setComments((prev) => [...prev, optimistic]);
     setBody('');
     const { data, error } = await supabase
-      .from('question_comments')
+      .from('patch_question_comments')
       .insert({ question_id: questionId, user_id: user.id, body: trimmed })
       .select()
       .single();

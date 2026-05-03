@@ -25,7 +25,7 @@ export function useProgressHydrator() {
         user.primaryEmailAddress?.emailAddress?.split('@')[0] ||
         `user-${user.id.slice(-6)}`;
       await supabase
-        .from('users')
+        .from('patch_users')
         .upsert(
           {
             id: user.id,
@@ -40,15 +40,15 @@ export function useProgressHydrator() {
 
       // 2. Fetch existing data in parallel
       const [progressRes, sessionsRes, xpRes, reviewRes] = await Promise.all([
-        supabase.from('progress').select('*').eq('user_id', user.id),
+        supabase.from('patch_progress').select('*').eq('user_id', user.id),
         supabase
-          .from('sessions')
+          .from('patch_sessions')
           .select('*')
           .eq('user_id', user.id)
           .order('completed_at', { ascending: true })
           .limit(200),
-        supabase.from('xp').select('*').eq('user_id', user.id).maybeSingle(),
-        supabase.from('review_queue').select('*').eq('user_id', user.id),
+        supabase.from('patch_xp').select('*').eq('user_id', user.id).maybeSingle(),
+        supabase.from('patch_review_queue').select('*').eq('user_id', user.id),
       ]);
 
       if (cancelled) return;

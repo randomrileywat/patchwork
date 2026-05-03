@@ -27,7 +27,7 @@ const upsertTopic = (subtopic, data) => {
   const userId = getUserId();
   if (!supabase || !userId) return;
   supabase
-    .from('progress')
+    .from('patch_progress')
     .upsert(
       {
         user_id: userId,
@@ -50,7 +50,7 @@ const upsertXP = (state) => {
   const userId = getUserId();
   if (!supabase || !userId) return;
   supabase
-    .from('xp')
+    .from('patch_xp')
     .upsert(
       {
         user_id: userId,
@@ -72,7 +72,7 @@ const insertSession = (session) => {
   const userId = getUserId();
   if (!supabase || !userId) return;
   supabase
-    .from('sessions')
+    .from('patch_sessions')
     .insert({
       user_id: userId,
       completed_at: new Date(session.endedAt).toISOString(),
@@ -92,7 +92,7 @@ const upsertReviewItem = (questionId) => {
   const userId = getUserId();
   if (!supabase || !userId) return;
   supabase
-    .from('review_queue')
+    .from('patch_review_queue')
     .upsert(
       {
         user_id: userId,
@@ -112,7 +112,7 @@ const deleteReviewItem = (questionId) => {
   const userId = getUserId();
   if (!supabase || !userId) return;
   supabase
-    .from('review_queue')
+    .from('patch_review_queue')
     .delete()
     .eq('user_id', userId)
     .eq('question_id', questionId)
@@ -126,7 +126,7 @@ const updateReviewAttempt = (questionId, count) => {
   const userId = getUserId();
   if (!supabase || !userId) return;
   supabase
-    .from('review_queue')
+    .from('patch_review_queue')
     .update({ attempt_count: count })
     .eq('user_id', userId)
     .eq('question_id', questionId)

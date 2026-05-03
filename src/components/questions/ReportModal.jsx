@@ -21,7 +21,7 @@ export default function ReportModal({ questionId, onClose, onSubmitted }) {
     e.preventDefault();
     if (!user) return;
     setSubmitting(true);
-    const { error } = await supabase.from('question_reports').insert({
+    const { error } = await supabase.from('patch_question_reports').insert({
       question_id: questionId,
       user_id: user.id,
       reason,

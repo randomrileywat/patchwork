@@ -80,7 +80,7 @@ function ReportsPanel() {
   const load = async () => {
     setLoading(true);
     const { data } = await supabaseAdmin
-      .from('question_reports')
+      .from('patch_question_reports')
       .select('*')
       .eq('resolved', false)
       .order('created_at', { ascending: false });
@@ -98,7 +98,7 @@ function ReportsPanel() {
 
   const resolve = async (id) => {
     await supabaseAdmin
-      .from('question_reports')
+      .from('patch_question_reports')
       .update({ resolved: true, resolved_at: new Date().toISOString() })
       .eq('id', id);
     load();
@@ -106,7 +106,7 @@ function ReportsPanel() {
 
   const resolveAllForQuestion = async (qid) => {
     await supabaseAdmin
-      .from('question_reports')
+      .from('patch_question_reports')
       .update({ resolved: true, resolved_at: new Date().toISOString() })
       .eq('question_id', qid)
       .eq('resolved', false);
@@ -185,14 +185,14 @@ function CommentsPanel() {
   const load = async () => {
     setLoading(true);
     const { data: rows } = await supabaseAdmin
-      .from('question_comments')
+      .from('patch_question_comments')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(200);
 
     if (rows && rows.length > 0) {
       const ids = [...new Set(rows.map((r) => r.user_id))];
-      const { data: users } = await supabaseAdmin.from('users').select('id, username').in('id', ids);
+      const { data: users } = await supabaseAdmin.from('patch_users').select('id, username').in('id', ids);
       const map = Object.fromEntries((users || []).map((u) => [u.id, u.username]));
       setComments(rows.map((r) => ({ ...r, username: map[r.user_id] || r.user_id.slice(-8) })));
     } else {
@@ -205,7 +205,7 @@ function CommentsPanel() {
 
   const remove = async (id) => {
     if (!confirm('Delete this comment?')) return;
-    await supabaseAdmin.from('question_comments').delete().eq('id', id);
+    await supabaseAdmin.from('patch_question_comments').delete().eq('id', id);
     load();
   };
 
