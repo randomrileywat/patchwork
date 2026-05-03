@@ -18,7 +18,6 @@ const ALL_DOMAINS = [
 const TYPE_OPTIONS = [
   { id: 'mc', label: 'Multiple Choice' },
   { id: 'mc-multi', label: 'Multi-Select' },
-  { id: 'flashcard', label: 'Flashcard' },
   { id: 'scenario', label: 'Scenario' },
   { id: 'drag-match', label: 'Drag-Match' },
 ];
@@ -40,7 +39,7 @@ export default function PracticeSession() {
 
   const [domains, setDomains] = useState(['domain-a', 'domain-b', 'domain-c', 'domain-d']);
   const [subtopics, setSubtopics] = useState([]);
-  const [types, setTypes] = useState(['mc', 'mc-multi', 'flashcard', 'scenario', 'drag-match']);
+  const [types, setTypes] = useState(['mc', 'mc-multi', 'scenario', 'drag-match']);
   const [count, setCount] = useState(10);
   const [difficulty, setDifficulty] = useState('all');
   const [session, setSession] = useState(null);

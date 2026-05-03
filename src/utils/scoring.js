@@ -15,8 +15,10 @@ export const computeRollingScore = (attempts, window = 20) => {
   return correct / recent.length;
 };
 
+export const MIN_ATTEMPTS_FOR_MASTERY = 10;
+
 export const masteryLevelFromScore = (score, attemptCount) => {
-  if (!attemptCount || attemptCount === 0) return MASTERY_LEVELS[0];
+  if (!attemptCount || attemptCount < MIN_ATTEMPTS_FOR_MASTERY) return MASTERY_LEVELS[0];
   if (score >= 0.80) return MASTERY_LEVELS[4];
   if (score >= 0.60) return MASTERY_LEVELS[3];
   if (score >= 0.40) return MASTERY_LEVELS[2];

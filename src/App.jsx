@@ -3,6 +3,7 @@ import { SignedIn, SignedOut, SignIn } from '@clerk/clerk-react';
 import AppShell from './components/layout/AppShell.jsx';
 import Dashboard from './views/Dashboard.jsx';
 import PracticeSession from './views/PracticeSession.jsx';
+import FlashcardSession from './views/FlashcardSession.jsx';
 import WeakAreaArena from './views/WeakAreaArena.jsx';
 import ReviewQueue from './views/ReviewQueue.jsx';
 import Leaderboard from './views/Leaderboard.jsx';
@@ -17,6 +18,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/practice" element={<PracticeSession />} />
+            <Route path="/flashcards" element={<FlashcardSession />} />
             <Route path="/arena" element={<WeakAreaArena />} />
             <Route path="/review" element={<ReviewQueue />} />
             <Route path="/leaderboard" element={<Leaderboard />} />

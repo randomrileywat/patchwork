@@ -1,12 +1,19 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Target, Swords, BookmarkCheck, Flame, Trophy, Shield } from 'lucide-react';
+import { LayoutDashboard, Target, Layers, Swords, BookmarkCheck, Flame, Trophy, Shield } from 'lucide-react';
 import { UserButton, useUser } from '@clerk/clerk-react';
 import { useProgressStore } from '../../store/progressStore.js';
 import { clerkDarkAppearance } from '../../lib/clerkTheme.js';
 
-const navLinks = [
+const mainLinks = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+];
+
+const studyLinks = [
   { to: '/practice', label: 'Practice', icon: Target },
+  { to: '/flashcards', label: 'Flashcards', icon: Layers },
+];
+
+const trackLinks = [
   { to: '/arena', label: 'Weak Area Arena', icon: Swords },
   { to: '/review', label: 'Review Queue', icon: BookmarkCheck, badgeKey: 'review' },
   { to: '/leaderboard', label: 'Leaderboard', icon: Trophy },
@@ -38,14 +45,57 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <nav className="px-3 py-4 flex-1">
+      <nav className="px-3 py-4 flex-1 overflow-y-auto">
         <div className="label-mono px-3 mb-2">Navigation</div>
-        <ul className="space-y-1">
-          {navLinks.map(({ to, label, icon: Icon, end, badgeKey }) => (
+        <ul className="space-y-1 mb-4">
+          {mainLinks.map(({ to, label, icon: Icon, end }) => (
             <li key={to}>
               <NavLink
                 to={to}
                 end={end}
+                className={({ isActive }) =>
+                  [
+                    'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border-accent)]'
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] border border-transparent',
+                  ].join(' ')
+                }
+              >
+                <Icon size={16} />
+                <span className="flex-1">{label}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+
+        <div className="label-mono px-3 mb-2">Study</div>
+        <ul className="space-y-1 mb-4">
+          {studyLinks.map(({ to, label, icon: Icon }) => (
+            <li key={to}>
+              <NavLink
+                to={to}
+                className={({ isActive }) =>
+                  [
+                    'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border-accent)]'
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] border border-transparent',
+                  ].join(' ')
+                }
+              >
+                <Icon size={16} />
+                <span className="flex-1">{label}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+
+        <ul className="space-y-1">
+          {trackLinks.map(({ to, label, icon: Icon, badgeKey }) => (
+            <li key={to}>
+              <NavLink
+                to={to}
                 className={({ isActive }) =>
                   [
                     'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
