@@ -17,7 +17,6 @@ export const clerkDarkAppearance = {
     socialButtonsBlockButton: 'bg-white hover:bg-gray-100 border border-gray-200 text-gray-900',
     socialButtonsBlockButtonText: 'text-gray-900 font-medium',
     // Hide Clerk branding footer
-    footer: 'hidden',
-    footerAction: 'hidden',
+
   },
 };

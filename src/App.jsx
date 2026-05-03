@@ -41,7 +41,7 @@ export default function App() {
               </svg>
               <div>
                 <div className="font-mono font-bold tracking-wider text-2xl text-[var(--text-primary)]">PATCHWORK</div>
-                <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">CTS-D Prep</div>
+                <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Adaptive Study</div>
               </div>
             </div>
             <SignIn appearance={clerkDarkAppearance} routing="hash" signUpUrl="/#/sign-up" />
